@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Anime Word Guess</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
+
 <body>
     <div class="jumbotron">
         <header class="display-4 text-center">My Anime Word Guess Game</header>
         <p class="lead text-center">GUESS A ANIME SHOW</p>
         <p class="lead text-center">Select any letter to get started!!!</p>
-        <div class= "text-center">
-            <img src= "assets/images/headerpic.jpg" >
+        <div class="text-center">
+            <img src="assets/images/headerpic.jpg">
         </div>
-      </div>
-      <div class="container">
+    </div>
+    <div class="container">
 
         <div class="row">
 
@@ -41,202 +44,298 @@
                 <div id="letters-already-guess"></div>
 
                 <br>
-                <br>
-
-                <button id="tryAgain">Try Another Word!</button>
-
-                <br>
-
-                <button id="restartAgain">Restart</button>
 
             </div>
 </body>
+
+<!-- JAVASCRIPT -->
+
+<script type="text/javascript">
+    var animeShows = [
+        "naruto",
+        "bleach",
+        "dragonball",
+        "death_note",
+        "seven_deadly_sins",
+        "attack_on_titan",
+        "akira"
+    ];
+
+    //Create all of the global variables
+    var winNum = 0;
+    var guessLeft = 12;
+
+    var userGuessArr = [];
+    var computerChoiceDashes = [];
+    var computerChoiceContainer = [];
+    var wordguess = document.getElementById("word-guess")
+    var lettersAlreadyGuess = document.getElementById("letters-already-guess")
+    //Get a choice of movie from the array
+    var computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
+    console.log(computerChoice)
+
+    var underscore = computerChoice.split("");
+    console.log(underscore.join(""))
+
+    //Replace the letters with underscores
+    for (i = 0; i < underscore.length; i++) {
+        computerChoiceDashes.push(underscore[i].replace(underscore[i], "_"));
+
+    }
+    console.log('computer dashes', computerChoiceDashes);
+
+    wordguess.textContent = computerChoiceDashes.join(" ");
+    document.getElementById("guess-left").textContent = guessLeft;
+    console.log('the word now', wordguess);
+
+    //Create a function that gets a new word and displays the underscores
+    function buildWord() {
+        
+        computerChoiceDashes = [];
+        //Get a word
+        computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
+        console.log(computerChoice)
+        underscore = computerChoice.split("");
+        console.log(underscore.join(""))
+
+        //Replace the letters with underscores
+        for (i = 0; i < underscore.length; i++) {
+            computerChoiceDashes.push(underscore[i].replace(underscore[i], "_"));
+
+        }
+        //Put it on the page
+        wordguess.textContent = computerChoiceDashes.join(" ");
+        document.getElementById("guess-left").textContent = guessLeft;
+        console.log('the word now', wordguess);
+
+    }
+
+    document.onkeyup = function (event) {
+        var userGuess = event.key;
+        console.log(userGuess);
+
+        for (i = 0; i < computerChoiceDashes.length; i++) {
+            if (userGuess === computerChoice[i]) {
+                computerChoiceDashes[i] = userGuess;
+                wordguess.textContent = computerChoiceDashes.join(" ");
+
+            }
+        }
+
+        userGuessArr.push(userGuess);
+        lettersAlreadyGuess.textContent = userGuessArr
+        if (computerChoice === computerChoiceDashes.join("")) {
+            alert("You are correct!");
+            winNum += 1;
+            guessLeft = 12;
+            userGuessArr = [];
+            //Call the function that makes the new word.
+            buildWord();
+        }
+
+        else {
+            guessLeft--;
             
-            <!-- JAVASCRIPT -->
-            
-            <script type="text/javascript">
-            var animeShows = [
-            "naruto",
-            "black clover",
-            "dragon ball",
-            "death note",
-            "seven deadly sins",
-            "attack on titan",
-            "akira"
-            ];
+        }
 
 
-            var winNum = 0;
-            var guessLeft = 12;
-
-                var userGuessArr = [];
-                var computerChoiceDashes = [];
-                var computerChoiceContainer = [];
-
-                var computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
-                console.log(computerChoice)
-                
-                for (i = 0; i < computerChoice.length; i++) {
-                computerChoiceDashes.push(computerChoice[i].replace("_"));
-
-                var displayDashes = computerChoiceDashes.join(" ");
-
-                computerChoiceContainer.push(computerChoice[i]);
-
-                var displayLetters = computerChoiceContainer.join(" ");
-                }
-                
-                document.getElementById("word-guess").textContent = displayDashes;
-                
-                String.prototype.replaceAt = function(index, char) {
-                var a = this.split("_");
-                a[index] = char;
-                return a.join("_");
-                };
-
-                var button = document.getElementById("tryAgain");
-                button.style.display = "none";
-                button.onclick = tryAgain;
-
-                function tryAgain(){
-                userGuessArr = [];
-                
-                var rmIndex = animeShows.indexOf(computerChoice);
-                animeShows.splice(rmIndex, 1);
-                console.log(animeShows);
-                
-
-                computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
-                console.log(computerChoice);
-
-                computerChoiceDashes = [];
-                computerChoiceContainer = [];
-
-                for (i = 0; i < computerChoice.length; i++) {
-                computerChoiceDashes.push(computerChoice[i].replace(/[^a-zA-Z_0-9-]/g,"_"));
-
-                displayDashes = computerChoiceDashes.join("_");
-                }
-                
-                for (i = 0; i < computerChoice.length; i++)
-                computerChoiceDashes.push(computerChoice[i]);
-                displayDashes = computerChoiceContainer.join("_");
-                }
-
-                document.getElementById("word-guess").textContent = displayDashes;
-
-                button.style.display = "none";
-
-                var buttonRestart = document.getElementById("restartAgain");
-                buttonRestart.style.display = "none";
-                buttonRestart.onclick = restartAgain;
-
-                function restartAgain(){
-                    location.reload();
-                }
-                
-                document.onkeyup = function(event) {
-                var userGuess = event.key;
-                console.log(userGuess);
-       
-                if (userGuessArr.includes(userGuess)) {
-                return false;
-                }
-
-                if (userGuess !== computerChoice.includes(userGuess)) {
-                guessLeft -= 1;
-                 userGuessArr.push(userGuess);
-
-                 if (guessLeft === 0) {
-                 guessLeft = 12;
-                userGuessArr = [];
-                
-                if (displayLetters === "n a r u t o") {
-                alert('That/"s correct')
-                } 
-                else if (displayLetters === "b l a c k c l o v e r") {
-                    alert('That/"s correct')
-                 
-                } else if (displayLetters === "d e a t h n o t e") {
-                    alert('That/"s correct')
-  
-                } else if (displayLetters === "a t t a c k o n t i t a n") {
-                    alert('That/"s correct')
-       
-                } else if (displayLetters === "b l e a c h") {
-                    alert('That/"s correct')
-                
-                } else if (displayLetters === "d r a g o n   b a l l") {
-                    alert('That/"s correct')
-    
-                } else if (displayLetters === "s e v e n d e a d l y s i n s") {
-                    alert('That/"s correct')
-                }
-                
-                button.style.display = "block";
-                buttonRestart.style.display = "block";
-                }
-
-                if (computerChoice.includes(userGuess)) {
-                console.log("correct!");
-
-                for (var i = 0; i < displayLetters.length; i++) {
-                if (userGuess === displayLetters[i]) {
-                console.log(i);
-
-                var char = displayLetters.charAt(i);
-
-                displayDashes = displayDashes.replaceAt(i, char);
-
-                document.getElementById("word-guess").textContent = displayDashes;
-                }
-                }
-
-                if (displayDashes === displayLetters) {
-                winNum += 1;
-                guessLeft = 12;
-
-                userGuessArr = [];
-
-      
-                button.style.display = "block";
-                buttonRestart.style.display = "block";
-                }
-
-                if (displayDashes === "n a r u t o") {
-                alert('That/"s correct')
-                } 
-                else if (displayDashes === "b l a c k c l o v e r") {
-                    alert('That\'s correct')
-                 
-                } else if (displayDashes === "d e a t h n o t e") {
-                    alert('That\'s correct')
-  
-                } else if (displayDashes === "a t t a c k o n t i t a n") {
-                    alert('That\'s correct')
-       
-                } else if (displayDashes === "b l e a c h") {
-                    alert('That\'s correct')
-                
-                } else if (displayDashes === "d r a g o n   b a l l") {
-                    alert('That\'s correct')
-    
-                } else if (displayDashes === "s e v e n d e a d l y s i n s") {
-                    alert('That\'s correct')
-                }
-                } else {
-                 console.log("not matches");
-                }
 
 
-                document.getElementById(
-                "letters-already-guess"
-                ).textContent = userGuessArr.join(", ");
 
 
-                document.getElementById("guess-left").textContent = guessLeft;
 
-                document.getElementById("win-num").textContent = winNum;
-}}        
+
+
+
+        document.getElementById("letters-already-guess").textContent = userGuessArr.join(", ");
+
+
+        document.getElementById("guess-left").textContent = guessLeft;
+
+        document.getElementById("win-num").textContent = winNum;
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // computerChoiceContainer.push(computerChoice[i]);
+
+                // var displayLetters = computerChoiceContainer.join(" ");
+
+                // for (i = 0; i < computerChoice.length; i++) {
+                // computerChoiceDashes.push(computerChoice[i].replace(/[^a-zA-Z_0-9-]/g,"_"));
+
+                // displayDashes = computerChoiceDashes.join("_");
+                // }
+                //console.log('displayDash', displayDashes);
+
+
+                // document.getElementById("word-guess").textContent = displayDashes;
+
+                // String.prototype.replaceAt = function(index, char) {
+                // var a = this.split("_");
+                // a[index] = char;
+                // return a.join("_");
+                // };
+
+                // var button = document.getElementById("tryAgain");
+                // button.style.display = "none";
+                // button.onclick = tryAgain;
+
+                // function tryAgain(){
+                // userGuessArr = [];
+
+                // var rmIndex = animeShows.indexOf(computerChoice);
+                // animeShows.splice(rmIndex, 1);
+                // console.log(animeShows);
+
+
+                // computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
+                // console.log(computerChoice);
+
+                // computerChoiceDashes = [];
+                // computerChoiceContainer = [];
+
+
+                // for (i = 0; i < computerChoice.length; i++)
+                // computerChoiceDashes.push(computerChoice[i]);
+                // displayDashes = computerChoiceContainer.join("_");
+                // }
+
+                // document.getElementById("word-guess").textContent = displayDashes;
+
+                // button.style.display = "none";
+
+                // var buttonRestart = document.getElementById("restartAgain");
+                // buttonRestart.style.display = "none";
+                // buttonRestart.onclick = restartAgain;
+
+                // function restartAgain(){
+                //     location.reload();
+                // }
+
+                // document.onkeyup = function(event) {
+                // var userGuess = event.key;
+                // console.log(userGuess);
+
+                // if (userGuessArr.includes(userGuess)) {
+                // return false;
+                // }
+
+                // if (userGuess !== computerChoice.includes(userGuess)) {
+                // guessLeft -= 1;
+                //  userGuessArr.push(userGuess);
+
+                //  if (guessLeft === 0) {
+                //  guessLeft = 12;
+                // userGuessArr = [];
+
+                // if (displayLetters === "n a r u t o") {
+                // alert('That/"s correct')
+                // } 
+                // else if (displayLetters === "b l a c k c l o v e r") {
+                //     alert('That/"s correct')
+
+                // } else if (displayLetters === "d e a t h n o t e") {
+                //     alert('That/"s correct')
+
+                // } else if (displayLetters === "a t t a c k o n t i t a n") {
+                //     alert('That/"s correct')
+
+                // } else if (displayLetters === "b l e a c h") {
+                //     alert('That/"s correct')
+
+                // } else if (displayLetters === "d r a g o n   b a l l") {
+                //     alert('That/"s correct')
+
+                // } else if (displayLetters === "s e v e n d e a d l y s i n s") {
+                //     alert('That/"s correct')
+                // }
+
+                // button.style.display = "block";
+                // buttonRestart.style.display = "block";
+                // }
+
+                // if (computerChoice.includes(userGuess)) {
+                // console.log("correct!");
+
+                // for (var i = 0; i < displayLetters.length; i++) {
+                // if (userGuess === displayLetters[i]) {
+                // console.log(i);
+
+                // var char = displayLetters.charAt(i);
+
+                // displayDashes = displayDashes.replaceAt(i, char);
+
+                // document.getElementById("word-guess").textContent = displayDashes;
+                // }
+                // }
+
+                // if (displayDashes === displayLetters) {
+                // winNum += 1;
+                // guessLeft = 12;
+
+                // userGuessArr = [];
+
+
+                // button.style.display = "block";
+                // buttonRestart.style.display = "block";
+
+                // }
+
+                // if (displayDashes === "n a r u t o") {
+                // alert('That/"s correct')
+                // } 
+                // else if (displayDashes === "b l a c k c l o v e r") {
+                //     alert('That\'s correct')
+
+                // } else if (displayDashes === "d e a t h n o t e") {
+                //     alert('That\'s correct')
+
+                // } else if (displayDashes === "a t t a c k o n t i t a n") {
+                //     alert('That\'s correct')
+
+                // } else if (displayDashes === "b l e a c h") {
+                //     alert('That\'s correct')
+
+                // } else if (displayDashes === "d r a g o n   b a l l") {
+                //     alert('That\'s correct')
+
+                // } else if (displayDashes === "s e v e n d e a d l y s i n s") {
+                //     alert('That\'s correct')
+                // }
+                // } else {
+                //  console.log("not matches");
+                // }
+
+
+                // document.getElementById(
+                // "letters-already-guess"
+                // ).textContent = userGuessArr.join(", ");
+
+
+                // document.getElementById("guess-left").textContent = guessLeft;
+
+                // document.getElementById("win-num").textContent = winNum;
 </script>
+
 </html>
