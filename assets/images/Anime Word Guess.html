@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)file:///Users/rupaliseth/class/Word-Guess-Game/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Anime Word Guess</title>
+    <link rel="stylesheet" href="./Anime Word Guess_files/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+</head>
+<body>
+    <div class="jumbotron">
+        <header class="display-4 text-center">My Anime Word Guess Game</header>
+        <p class="lead text-center">GUESS A ANIME SHOW</p>
+        <p class="lead text-center">Select any letter to get started!!!</p>
+        <div class="text-center">
+            <img src="file:///Users/rupaliseth/class/Word-Guess-Game/assets/images/headerpic.jpg">
+        </div>
+      </div>
+      <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6 text-center">
+
+
+                <p class="font-weight-bolder">Wins</p>
+
+                <div id="win-num"></div>
+
+                <p class="font-weight-bolder">Current Word</p>
+
+                <div id="word-guess">a t t a c k   o n   t i t a n</div>
+
+                <p class="font-weight-bolder">Number of Guesses Remaining </p>
+
+                <div id="guess-left"></div>
+
+                <p class="font-weight-bolder">Letters Already Guesses</p>
+
+                <div id="letters-already-guess"></div>
+
+                <br>
+                <br>
+
+                <button id="tryAgain">Try Another Word!</button>
+
+                <br>
+
+                <button id="restartAgain">Restart</button>
+
+            </div>
+
+            
+            <!-- JAVASCRIPT -->
+            
+            <script type="text/javascript">
+            var animeShows = [
+            "naruto",
+            "bleach",
+            "dragon ball",
+            "death note",
+            "seven deadly sins",
+            "attack on titan",
+            "akira"
+            ];
+
+
+            var winNum = 0;
+            var guessLeft = 12;
+
+                var userGuessArr = [];
+                var computerChoiceDashes = [];
+                var computerChoiceContainer = [];
+
+                var computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
+                console.log(computerChoice)
+                
+                for (i = 0; i < computerChoice.length; i++) {
+                computerChoiceDashes.push(computerChoice[i].replace("_"));
+
+                var displayDashes = computerChoiceDashes.join(" ");
+
+                computerChoiceContainer.push(computerChoice[i]);
+
+                var displayLetters = computerChoiceContainer.join(" ");
+                }
+                
+                document.getElementById("word-guess").textContent = displayDashes;
+                
+                String.prototype.replaceAt = function(index, char) {
+                var a = this.split("_");
+                a[index] = char;
+                return a.join("_");
+                };
+                
+                computerChoice = animeShows[Math.floor(Math.random() * animeShows.length)];
+                console.log(computerChoice);
+
+                computerChoiceDashes = [];
+                computerChoiceContainer = [];
+
+                for (i = 0; i < computerChoice.length; i++) {
+                computerChoiceDashes.push(computerChoice[i].replace("_"));
+
+                displayDashes = computerChoiceDashes.join("_");
+                }
+                document.onkeyup = function(event) {
+
+                var userGuess = event.key;
+
+                console.log(userGuess);}
+  
+  </script>
+</div></div></body></html>
